@@ -45,4 +45,16 @@ describe("HDLParser", function() {
   it("ignores whitespace in chip definition", function() {
     expect(parsingHDLWith("CHIP X { PARTS: }")).not.to.throw();
   });
+
+  it("ignores newlines in chip definition (Unix)", function() {
+    expect(parsingHDLWith("CHIP X {\n  PARTS:\n}\n")).not.to.throw();
+  });
+
+  it("ignores carriage returns in chip definition (early Mac)", function() {
+    expect(parsingHDLWith("CHIP X {\r  PARTS:\r}\r")).not.to.throw();
+  });
+
+  it("ignores CR/NL combinations in chip definition (DOS/Windows)", function() {
+    expect(parsingHDLWith("CHIP X {\r\n  PARTS:\r\n}\r\n")).not.to.throw();
+  });
 });
