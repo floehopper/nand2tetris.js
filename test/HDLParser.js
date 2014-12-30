@@ -57,4 +57,40 @@ describe("HDLParser", function() {
   it("ignores CR/NL combinations in chip definition (DOS/Windows)", function() {
     expect(parsingHDLWith("CHIP X {\r\n  PARTS:\r\n}\r\n")).not.to.throw();
   });
+
+  it("parses chip with empty list of inputs", function() {
+    expect(parseHDL("CHIP X{IN;PARTS:}").inputs).to.be.empty;
+  });
+
+  it("parses chip with single input", function() {
+    expect(parseHDL("CHIP X{IN y;PARTS:}").inputs).to.eql(["y"]);
+  });
+
+  it("ignores whitespace after inputs terminator", function() {
+    expect(parseHDL("CHIP X{IN y; PARTS:}").inputs).to.eql(["y"]);
+  });
+
+  it("rejects inputs if keyword and pin name are not separated by whitespace", function() {
+    expect(parsingHDLWith("CHIP X{INy;PARTS:}")).to.throw();
+  });
+
+  it("parses input pin name containing uppercase & lowercase letters", function() {
+    expect(parseHDL("CHIP X{IN PinName;PARTS:}").inputs).to.contain("PinName");
+  });
+
+  it("parses input pin name containing digits", function() {
+    expect(parseHDL("CHIP X{IN y456;PARTS:}").inputs).to.contain("y456");
+  });
+
+  it("rejects input pin name if it starts with a digit", function() {
+    expect(parsingHDLWith("CHIP X{IN 9y;PARTS:}")).to.throw();
+  });
+
+  it("parses chip with multiple inputs", function() {
+    expect(parseHDL("CHIP X{IN a,b,c;PARTS:}").inputs).to.eql(["a", "b", "c"]);
+  });
+
+  it("ignores whitespace around input pins", function() {
+    expect(parseHDL("CHIP X{IN a , b , c ;PARTS:}").inputs).to.eql(["a", "b", "c"]);
+  });
 });
