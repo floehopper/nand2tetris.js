@@ -89,6 +89,14 @@ describe("HDLParser", function() {
       expect(parsingHDLWith("CHIP X{IN 9y;PARTS:}")).to.throw();
     });
 
+    it("parses input pin name containing brackets", function() {
+      expect(parseHDL("CHIP X{IN y[16];PARTS:}").inputs).to.contain("y[16]");
+    });
+
+    it("rejects input pin name if it starts with a bracket", function() {
+      expect(parsingHDLWith("CHIP X{IN [8];PARTS:}")).to.throw();
+    });
+
     it("parses chip with multiple inputs", function() {
       expect(parseHDL("CHIP X{IN a,b,c;PARTS:}").inputs).to.eql(["a", "b", "c"]);
     });
@@ -125,6 +133,14 @@ describe("HDLParser", function() {
 
     it("rejects output pin name if it starts with a digit", function() {
       expect(parsingHDLWith("CHIP X{OUT 9y;PARTS:}")).to.throw();
+    });
+
+    it("parses output pin name containing brackets", function() {
+      expect(parseHDL("CHIP X{OUT y[16];PARTS:}").outputs).to.contain("y[16]");
+    });
+
+    it("rejects out put pin name if it starts with a bracket", function() {
+      expect(parsingHDLWith("CHIP X{OUT [8];PARTS:}")).to.throw();
     });
 
     it("parses chip with multiple outputs", function() {
