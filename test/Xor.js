@@ -1,8 +1,8 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/gate");
-var Xor = Gate.lookup("xor");
+var Gate = require("../lib/Gate");
+var Xor = Gate.lookup("Xor");
 
 describe("Xor", function() {
   var xor;

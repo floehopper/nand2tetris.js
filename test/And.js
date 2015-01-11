@@ -1,8 +1,8 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/gate");
-var And = Gate.lookup("and");
+var Gate = require("../lib/Gate");
+var And = Gate.lookup("And");
 
 describe("And", function() {
   var nand;

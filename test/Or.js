@@ -1,8 +1,8 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/gate");
-var Or = Gate.lookup("or");
+var Gate = require("../lib/Gate");
+var Or = Gate.lookup("Or");
 
 describe("Or", function() {
   var or;

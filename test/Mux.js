@@ -1,8 +1,8 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/gate");
-var Mux = Gate.lookup("mux");
+var Gate = require("../lib/Gate");
+var Mux = Gate.lookup("Mux");
 
 describe("Mux", function() {
   var mux;
