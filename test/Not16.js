@@ -15,7 +15,6 @@ describe("Not16", function() {
     for (var index = 0; index < 16; index++) {
       not16.setInputValue("in[" + index + "]", 0);
     };
-    not16.evaluate();
     for (var index = 0; index < 16; index++) {
       expect(not16.getOutputValue("out[" + index + "]")).to.eql(1);
     };
@@ -25,7 +24,6 @@ describe("Not16", function() {
     for (var index = 0; index < 16; index++) {
       not16.setInputValue("in[" + index + "]", 1);
     };
-    not16.evaluate();
     for (var index = 0; index < 16; index++) {
       expect(not16.getOutputValue("out[" + index + "]")).to.eql(0);
     };

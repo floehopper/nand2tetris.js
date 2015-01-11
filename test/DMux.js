@@ -18,13 +18,11 @@ describe("DMux", function() {
 
     it("sets output a low when input is low", function() {
       dmux.setInputValue("in", 0);
-      dmux.evaluate();
       expect(dmux.getOutputValue("a")).to.eql(0);
     });
 
     it("sets output a high when input is high", function() {
       dmux.setInputValue("in", 1);
-      dmux.evaluate();
       expect(dmux.getOutputValue("a")).to.eql(1);
     });
   });
@@ -36,13 +34,11 @@ describe("DMux", function() {
 
     it("sets output b low when input is low", function() {
       dmux.setInputValue("in", 0);
-      dmux.evaluate();
       expect(dmux.getOutputValue("b")).to.eql(0);
     });
 
     it("sets output b high when input is high", function() {
       dmux.setInputValue("in", 1);
-      dmux.evaluate();
       expect(dmux.getOutputValue("b")).to.eql(1);
     });
   });
