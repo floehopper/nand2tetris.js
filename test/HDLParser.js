@@ -11,7 +11,7 @@ describe("HDLParser", function() {
   });
 
   var parseHDL = function parseHDL(hdl) {
-    return parser.parse(hdl);
+    return parser.parse(hdl, { AST: require("../lib/AST") });
   };
 
   var parsingHDLWith = function parsingHDLWith(hdl) {
