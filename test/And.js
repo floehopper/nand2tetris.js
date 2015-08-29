@@ -5,7 +5,7 @@ var Gate = require("../lib/Gate");
 var And = Gate.lookup("And");
 
 describe("And", function() {
-  var nand;
+  var and;
 
   beforeEach(function() {
     and = new And();
