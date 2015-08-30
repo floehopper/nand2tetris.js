@@ -2,6 +2,7 @@ var chai = require("chai");
 var expect = chai.expect;
 
 var HDLParser = require("../lib/HDLParser");
+var AST = require("../lib/AST");
 
 describe("HDLParser", function() {
   var parser;
@@ -11,7 +12,7 @@ describe("HDLParser", function() {
   });
 
   var parseHDL = function parseHDL(hdl) {
-    return parser.parse(hdl);
+    return parser.parse(hdl, { AST: AST });
   };
 
   var parsingHDLWith = function parsingHDLWith(hdl) {
