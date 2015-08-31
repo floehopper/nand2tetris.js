@@ -161,6 +161,11 @@ describe("HDLParser", function() {
       ]));
     });
 
+    it("is null if chip has a built-in implementation", function() {
+      var parts = parseHDL("CHIP X{BUILTIN Y;}").parts;
+      expect(parts).to.be.null;
+    });
+
     it("ignores whitespace around part parentheses", function() {
       var parts = parseHDL("CHIP X{PARTS: Y ( a=b ) ;}").parts;
       expect(parts).to.eql(new AST.Parts([
@@ -227,6 +232,18 @@ describe("HDLParser", function() {
         new AST.Part("Y", [new AST.Connection("a", "b")]),
         new AST.Part("Z", [new AST.Connection("c", "d")])
       ]));
+    });
+  });
+
+  describe("builtin", function() {
+    it("parses chip with builtin", function() {
+      var builtin = parseHDL("CHIP X{BUILTIN Y;}").builtin;
+      expect(builtin).to.eql(new AST.Builtin("Y"));
+    });
+
+    it("is null if chip is implemented by parts", function() {
+      var builtin = parseHDL("CHIP X{PARTS: Y(a=b);}").builtin;
+      expect(builtin).to.be.null;
     });
   });
 });
