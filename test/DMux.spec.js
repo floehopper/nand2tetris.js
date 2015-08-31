@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var DMux = Gate.lookup("DMux");
+var Resolver = require("../lib/Resolver");
 
 describe("DMux", function() {
   var dmux;
 
   beforeEach(function() {
-    dmux = new DMux();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("DMux");
+    dmux = definition.buildModel();
   });
 
   describe("when output a is selected", function() {

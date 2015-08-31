@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var And = Gate.lookup("And");
+var Resolver = require("../lib/Resolver");
 
 describe("And", function() {
   var and;
 
   beforeEach(function() {
-    and = new And();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("And");
+    and = definition.buildModel();
   });
 
   it("sets output low when both inputs are low", function() {

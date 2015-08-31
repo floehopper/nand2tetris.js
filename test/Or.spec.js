@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var Or = Gate.lookup("Or");
+var Resolver = require("../lib/Resolver");
 
 describe("Or", function() {
   var or;
 
   beforeEach(function() {
-    or = new Or();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("Or");
+    or = definition.buildModel();
   });
 
   it("sets output low when both inputs are low", function() {

@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var Mux = Gate.lookup("Mux");
+var Resolver = require("../lib/Resolver");
 
 describe("Mux", function() {
   var mux;
 
   beforeEach(function() {
-    mux = new Mux();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("Mux");
+    mux = definition.buildModel();
   });
 
   describe("when input a is selected", function() {

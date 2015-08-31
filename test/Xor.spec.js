@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var Xor = Gate.lookup("Xor");
+var Resolver = require("../lib/Resolver");
 
 describe("Xor", function() {
   var xor;
 
   beforeEach(function() {
-    xor = new Xor();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("Xor");
+    xor = definition.buildModel();
   });
 
   it("sets output low when both inputs are low", function() {

@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var Nand = Gate.lookup("Nand");
+var Resolver = require("../lib/Resolver");
 
 describe("Nand", function() {
   var nand;
 
   beforeEach(function() {
-    nand = new Nand();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("Nand");
+    nand = definition.buildModel();
   });
 
   it("sets output high when both inputs are low", function() {

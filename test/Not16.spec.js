@@ -1,14 +1,15 @@
 var chai = require("chai");
 var expect = chai.expect;
 
-var Gate = require("../lib/Gate");
-var Not16 = Gate.lookup("Not16");
+var Resolver = require("../lib/Resolver");
 
 describe("Not16", function() {
   var not16;
 
   beforeEach(function() {
-    not16 = new Not16();
+    var resolver = new Resolver();
+    var definition = resolver.resolvePart("Not16");
+    not16 = definition.buildModel();
   });
 
   it("sets outputs high when inputs are low", function() {
