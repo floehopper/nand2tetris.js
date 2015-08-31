@@ -41,7 +41,7 @@ describe("HDLParser", function() {
     });
 
     it("parses chip with empty list of parts", function() {
-      expect(parseHDL("CHIP X{PARTS:}").parts).to.be.empty;
+      expect(parseHDL("CHIP X{PARTS:}").parts.parts).to.be.empty;
     });
 
     it("ignores whitespace in chip definition", function() {
@@ -156,83 +156,77 @@ describe("HDLParser", function() {
   describe("parts", function() {
     it("parses chip with single part and single connection", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b);}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")])
+      ]));
     });
 
     it("ignores whitespace around part parentheses", function() {
       var parts = parseHDL("CHIP X{PARTS: Y ( a=b ) ;}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")])
+      ]));
     });
 
     it("ignores whitespace around part connection equals sign", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a = b);}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")])
+      ]));
     });
 
     it("parses chip with single part and multiple connections", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b,c=d);}").parts;
-      expect(parts).to.eql([{
-        name: "Y", connections: [
-          { part_pin: "a", chip_pin: "b" },
-          { part_pin: "c", chip_pin: "d" },
-        ]
-      }]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b"), new AST.Connection("c", "d")])
+      ]));
     });
 
     it("ignores whitespace around part connection separators", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b , c=d);}").parts;
-      expect(parts).to.eql([{
-        name: "Y", connections: [
-          { part_pin: "a", chip_pin: "b" },
-          { part_pin: "c", chip_pin: "d" },
-        ]
-      }]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b"), new AST.Connection("c", "d")])
+      ]));
     });
 
     it("parses chip with multiple parts each with single connection", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b);Z(c=d);}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] },
-        { name: "Z", connections: [{ part_pin: "c", chip_pin: "d" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")]),
+        new AST.Part("Z", [new AST.Connection("c", "d")])
+      ]));
     });
 
     it("ignores whitespace around part terminators", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b) ; Z(c=d) ; }").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] },
-        { name: "Z", connections: [{ part_pin: "c", chip_pin: "d" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")]),
+        new AST.Part("Z", [new AST.Connection("c", "d")])
+      ]));
     });
 
     it("ignores newlines between parts (Unix)", function() {
       var parts = parseHDL("CHIP X{PARTS:\n  Y(a=b);\n  Z(c=d);\n}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] },
-        { name: "Z", connections: [{ part_pin: "c", chip_pin: "d" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")]),
+        new AST.Part("Z", [new AST.Connection("c", "d")])
+      ]));
     });
 
     it("ignores carriage returns between parts (early Mac)", function() {
       var parts = parseHDL("CHIP X{PARTS:\r  Y(a=b);\r  Z(c=d);\r}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] },
-        { name: "Z", connections: [{ part_pin: "c", chip_pin: "d" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")]),
+        new AST.Part("Z", [new AST.Connection("c", "d")])
+      ]));
     });
 
     it("ignores CR/NL combinations between parts (DOS/Windows)", function() {
       var parts = parseHDL("CHIP X{PARTS:\r\n  Y(a=b);\r\n  Z(c=d);\r\n}").parts;
-      expect(parts).to.eql([
-        { name: "Y", connections: [{ part_pin: "a", chip_pin: "b" }] },
-        { name: "Z", connections: [{ part_pin: "c", chip_pin: "d" }] }
-      ]);
+      expect(parts).to.eql(new AST.Parts([
+        new AST.Part("Y", [new AST.Connection("a", "b")]),
+        new AST.Part("Z", [new AST.Connection("c", "d")])
+      ]));
     });
   });
 });
