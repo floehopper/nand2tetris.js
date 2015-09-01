@@ -67,11 +67,11 @@ describe("HDLParser", function() {
     });
 
     it("parses chip with single input", function() {
-      expect(parseHDL("CHIP X{IN y;PARTS:}").inputs.busses).to.eql([new AST.Bus("y")]);
+      expect(parseHDL("CHIP X{IN y;PARTS:}").inputs.busses).to.eql([new AST.Bus({ name: "y" })]);
     });
 
     it("ignores whitespace after inputs terminator", function() {
-      expect(parseHDL("CHIP X{IN y; PARTS:}").inputs.busses).to.eql([new AST.Bus("y")]);
+      expect(parseHDL("CHIP X{IN y; PARTS:}").inputs.busses).to.eql([new AST.Bus({ name: "y" })]);
     });
 
     it("rejects inputs if keyword and pin name are not separated by whitespace", function() {
@@ -79,11 +79,11 @@ describe("HDLParser", function() {
     });
 
     it("parses input pin name containing uppercase & lowercase letters", function() {
-      expect(parseHDL("CHIP X{IN PinName;PARTS:}").inputs.busses).to.contain(new AST.Bus("PinName"));
+      expect(parseHDL("CHIP X{IN PinName;PARTS:}").inputs.busses).to.contain(new AST.Bus({ name: "PinName" }));
     });
 
     it("parses input pin name containing digits", function() {
-      expect(parseHDL("CHIP X{IN y456;PARTS:}").inputs.busses).to.contain(new AST.Bus("y456"));
+      expect(parseHDL("CHIP X{IN y456;PARTS:}").inputs.busses).to.contain(new AST.Bus({name: "y456" }));
     });
 
     it("rejects input pin name if it starts with a digit", function() {
@@ -91,7 +91,7 @@ describe("HDLParser", function() {
     });
 
     it("parses input pin name containing brackets", function() {
-      expect(parseHDL("CHIP X{IN y[4];PARTS:}").inputs.busses).to.eql([new AST.Bus("y", 4)]);
+      expect(parseHDL("CHIP X{IN y[4];PARTS:}").inputs.busses).to.eql([new AST.Bus({ name: "y", width: 4 })]);
     });
 
     it("rejects input pin name if it starts with a bracket", function() {
@@ -100,17 +100,17 @@ describe("HDLParser", function() {
 
     it("parses chip with multiple inputs", function() {
       expect(parseHDL("CHIP X{IN a,b,c;PARTS:}").inputs.busses).to.eql([
-        new AST.Bus("a"),
-        new AST.Bus("b"),
-        new AST.Bus("c")
+        new AST.Bus({ name: "a" }),
+        new AST.Bus({ name: "b" }),
+        new AST.Bus({ name: "c" })
       ]);
     });
 
     it("ignores whitespace around input pins", function() {
       expect(parseHDL("CHIP X{IN a , b , c ;PARTS:}").inputs.busses).to.eql([
-        new AST.Bus("a"),
-        new AST.Bus("b"),
-        new AST.Bus("c")
+        new AST.Bus({ name: "a" }),
+        new AST.Bus({ name: "b" }),
+        new AST.Bus({ name: "c" })
       ]);
     });
   });
@@ -121,11 +121,11 @@ describe("HDLParser", function() {
     });
 
     it("parses chip with single output", function() {
-      expect(parseHDL("CHIP X{OUT y;PARTS:}").outputs.busses).to.eql([new AST.Bus("y")]);
+      expect(parseHDL("CHIP X{OUT y;PARTS:}").outputs.busses).to.eql([new AST.Bus({ name: "y" })]);
     });
 
     it("ignores whitespace after outputs terminator", function() {
-      expect(parseHDL("CHIP X{OUT y; PARTS:}").outputs.busses).to.eql([new AST.Bus("y")]);
+      expect(parseHDL("CHIP X{OUT y; PARTS:}").outputs.busses).to.eql([new AST.Bus({ name: "y" })]);
     });
 
     it("rejects outputs if keyword and pin name are not separated by whitespace", function() {
@@ -133,11 +133,11 @@ describe("HDLParser", function() {
     });
 
     it("parses output pin name containing uppercase & lowercase letters", function() {
-      expect(parseHDL("CHIP X{OUT PinName;PARTS:}").outputs.busses).to.contain(new AST.Bus("PinName"));
+      expect(parseHDL("CHIP X{OUT PinName;PARTS:}").outputs.busses).to.contain(new AST.Bus({ name: "PinName" }));
     });
 
     it("parses output pin name containing digits", function() {
-      expect(parseHDL("CHIP X{OUT y456;PARTS:}").outputs.busses).to.contain(new AST.Bus("y456"));
+      expect(parseHDL("CHIP X{OUT y456;PARTS:}").outputs.busses).to.contain(new AST.Bus({ name: "y456" }));
     });
 
     it("rejects output pin name if it starts with a digit", function() {
@@ -145,7 +145,7 @@ describe("HDLParser", function() {
     });
 
     it("parses output pin name containing brackets", function() {
-      expect(parseHDL("CHIP X{OUT y[4];PARTS:}").outputs.busses).to.eql([new AST.Bus("y", 4)]);
+      expect(parseHDL("CHIP X{OUT y[4];PARTS:}").outputs.busses).to.eql([new AST.Bus({ name: "y", width: 4 })]);
     });
 
     it("rejects out put pin name if it starts with a bracket", function() {
@@ -154,17 +154,17 @@ describe("HDLParser", function() {
 
     it("parses chip with multiple outputs", function() {
       expect(parseHDL("CHIP X{OUT a,b,c;PARTS:}").outputs.busses).to.eql([
-        new AST.Bus("a"),
-        new AST.Bus("b"),
-        new AST.Bus("c")
+        new AST.Bus({ name: "a" }),
+        new AST.Bus({ name: "b" }),
+        new AST.Bus({ name: "c" })
       ]);
     });
 
     it("ignores whitespace around output pins", function() {
       expect(parseHDL("CHIP X{OUT a , b , c ;PARTS:}").outputs.busses).to.eql([
-        new AST.Bus("a"),
-        new AST.Bus("b"),
-        new AST.Bus("c")
+        new AST.Bus({ name: "a" }),
+        new AST.Bus({ name: "b" }),
+        new AST.Bus({ name: "c" })
       ]);
     });
   });
@@ -172,9 +172,9 @@ describe("HDLParser", function() {
   describe("parts", function() {
     it("parses chip with single part and single connection", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b);}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [new AST.Connection({ part_pin: "a", chip_pin: "b" })]})
+      ]}));
     });
 
     it("is null if chip has a built-in implementation", function() {
@@ -184,77 +184,107 @@ describe("HDLParser", function() {
 
     it("ignores whitespace around part parentheses", function() {
       var parts = parseHDL("CHIP X{PARTS: Y ( a=b ) ;}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]})
+      ]}));
     });
 
     it("ignores whitespace around part connection equals sign", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a = b);}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]})
+      ]}));
     });
 
     it("parses chip with single part and multiple connections", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b,c=d);}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b"), new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" }),
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("ignores whitespace around part connection separators", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b , c=d);}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b"), new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" }),
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("parses chip with multiple parts each with single connection", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b);Z(c=d);}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")]),
-        new AST.Part("Z", [new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]}),
+        new AST.Part({ name: "Z", connections: [
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("ignores whitespace around part terminators", function() {
       var parts = parseHDL("CHIP X{PARTS: Y(a=b) ; Z(c=d) ; }").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")]),
-        new AST.Part("Z", [new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]}),
+        new AST.Part({ name: "Z", connections: [
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("ignores newlines between parts (Unix)", function() {
       var parts = parseHDL("CHIP X{PARTS:\n  Y(a=b);\n  Z(c=d);\n}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")]),
-        new AST.Part("Z", [new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]}),
+        new AST.Part({ name: "Z", connections: [
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("ignores carriage returns between parts (early Mac)", function() {
       var parts = parseHDL("CHIP X{PARTS:\r  Y(a=b);\r  Z(c=d);\r}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")]),
-        new AST.Part("Z", [new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]}),
+        new AST.Part({ name: "Z", connections: [
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
 
     it("ignores CR/NL combinations between parts (DOS/Windows)", function() {
       var parts = parseHDL("CHIP X{PARTS:\r\n  Y(a=b);\r\n  Z(c=d);\r\n}").parts;
-      expect(parts).to.eql(new AST.Parts([
-        new AST.Part("Y", [new AST.Connection("a", "b")]),
-        new AST.Part("Z", [new AST.Connection("c", "d")])
-      ]));
+      expect(parts).to.eql(new AST.Parts({ parts: [
+        new AST.Part({ name: "Y", connections: [
+          new AST.Connection({ part_pin: "a", chip_pin: "b" })
+        ]}),
+        new AST.Part({ name: "Z", connections: [
+          new AST.Connection({ part_pin: "c", chip_pin: "d" }),
+        ]})
+      ]}));
     });
   });
 
   describe("builtin", function() {
     it("parses chip with builtin", function() {
       var builtin = parseHDL("CHIP X{BUILTIN Y;}").builtin;
-      expect(builtin).to.eql(new AST.Builtin("Y"));
+      expect(builtin).to.eql(new AST.Builtin({ name: "Y" }));
     });
 
     it("is null if chip is implemented by parts", function() {
