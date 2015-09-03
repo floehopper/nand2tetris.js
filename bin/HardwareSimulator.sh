@@ -11,12 +11,13 @@ var Resolver = require("../lib/Resolver");
 var LineIterator = require("../lib/LineIterator");
 
 var HardwareSimulator = function() {
-  var run = function(testFilePath) {
+  this.parser = new TSTParser();
+
+  this.run = function(testFilePath) {
     var testDirectory = path.dirname(testFilePath);
     var testFile = fs.readFileSync(testFilePath);
 
-    var parser = new TSTParser();
-    var ast = parser.parse(testFile.toString());
+    var ast = this.parser.parse(testFile.toString());
 
     var config = setup(ast, testDirectory);
     simulate(ast, config);
@@ -108,7 +109,7 @@ var HardwareSimulator = function() {
     console.log("End of script - Comparison ended successfully");
     return;
   };
-  return { run: run };
+  return;
 };
 
 var simulator = new HardwareSimulator();
