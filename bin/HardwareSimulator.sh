@@ -56,22 +56,8 @@ ast.setup_step.forEach(function(command) {
   };
 });
 
-
-function lineIterator(string) {
-  var lineNumber = 0;
-  var lines = string.split(/\r|\n|\r\n/);
-  return {
-    next: function() {
-      if (lineNumber < lines.length) {
-        return { line: lines[lineNumber++], lineNumber: lineNumber, done: false };
-      } else {
-        return { done: true };
-      };
-    }
-  };
-};
-
-var comparisonLines = lineIterator(fs.readFileSync(comparisonFilePath).toString());
+var LineIterator = require("../lib/LineIterator");
+var comparisonLines = new LineIterator(fs.readFileSync(comparisonFilePath).toString());
 var ignoredHeaders = comparisonLines.next();
 
 ast.simulation_steps.forEach(function(step) {
