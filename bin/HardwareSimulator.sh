@@ -10,20 +10,26 @@ var TSTParser = require("../lib/TSTParser");
 var Resolver = require("../lib/Resolver");
 var LineIterator = require("../lib/LineIterator");
 
-var HardwareSimulator = function(testFilePath) {
-  var testDirectory = path.dirname(testFilePath);
-  var testFile = fs.readFileSync(testFilePath);
+var HardwareSimulator = function() {
+  var run = function(testFilePath) {
+    var testDirectory = path.dirname(testFilePath);
+    var testFile = fs.readFileSync(testFilePath);
 
-  var parser = new TSTParser();
-  var ast = parser.parse(testFile.toString());
-  var resolver = new Resolver();
+    var parser = new TSTParser();
+    var ast = parser.parse(testFile.toString());
 
-  var chip;
-  var outputFilePath;
-  var comparisonFilePath;
-  var variables;
+    var config = setup(ast, testDirectory);
+    simulate(ast, config);
+  };
 
-  var setup = function() {
+  var setup = function(ast, testDirectory) {
+    var chip;
+    var outputFilePath;
+    var comparisonFilePath;
+    var variables;
+
+    var resolver = new Resolver();
+
     ast.setup_step.forEach(function(command) {
       switch(command.command) {
         case "load":
@@ -56,25 +62,25 @@ var HardwareSimulator = function(testFilePath) {
           throw "Unknown command: " + command.command;
       };
     });
-    return;
+    return { chip: chip, outputFilePath: outputFilePath, comparisonFilePath: comparisonFilePath, variables: variables };
   };
 
-  var run = function() {
-    var comparisonLines = new LineIterator(fs.readFileSync(comparisonFilePath).toString());
+  var simulate = function(ast, config) {
+    var comparisonLines = new LineIterator(fs.readFileSync(config.comparisonFilePath).toString());
     var ignoredHeaders = comparisonLines.next();
 
     ast.simulation_steps.forEach(function(step) {
       step.forEach(function(command) {
         switch(command.command) {
           case "set":
-            chip.setInputValue(command.variable, command.value);
+            config.chip.setInputValue(command.variable, command.value);
             break;
           case "eval":
             // no op
             break;
           case "output":
-            var columns = variables.map(function(v) {
-              var value = chip.getValue(v.name);
+            var columns = config.variables.map(function(v) {
+              var value = config.chip.getValue(v.name);
               var leftPadding = sprintf("%" + v.left_padding + "s", "");
               var rightPadding = sprintf("%" + v.right_padding + "s", "");
               return leftPadding + value + rightPadding;
@@ -82,7 +88,7 @@ var HardwareSimulator = function(testFilePath) {
             columns.unshift(""); // add initial pipe separator
             columns.push(""); // add final pipe separator
             var outputLine = columns.join("|");
-            fs.appendFileSync(outputFilePath, outputLine + "\n");
+            fs.appendFileSync(config.outputFilePath, outputLine + "\n");
 
             var comparisonLine = comparisonLines.next();
             if (comparisonLine.done) {
@@ -102,10 +108,8 @@ var HardwareSimulator = function(testFilePath) {
     console.log("End of script - Comparison ended successfully");
     return;
   };
-  
-  return { setup: setup, run: run };
+  return { run: run };
 };
 
-var simulator = new HardwareSimulator(testFilePath);
-simulator.setup();
-simulator.run();
+var simulator = new HardwareSimulator();
+simulator.run(testFilePath);
