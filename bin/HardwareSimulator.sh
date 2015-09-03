@@ -2,21 +2,21 @@
 
 var testFilePath = process.argv[2];
 
-var HardwareSimulator = function(testFilePath) {
-  var path = require("path");
-  var testDirectory = path.dirname(testFilePath);
+var path = require("path");
+var fs = require("fs");
+var sprintf = require("underscore.string/sprintf");
 
-  var fs = require("fs");
+var TSTParser = require("../lib/TSTParser");
+var Resolver = require("../lib/Resolver");
+var LineIterator = require("../lib/LineIterator");
+
+var HardwareSimulator = function(testFilePath) {
+  var testDirectory = path.dirname(testFilePath);
   var testFile = fs.readFileSync(testFilePath);
 
-  var TSTParser = require("../lib/TSTParser");
   var parser = new TSTParser();
   var ast = parser.parse(testFile.toString());
-
-  var Resolver = require("../lib/Resolver");
   var resolver = new Resolver();
-
-  var sprintf = require("underscore.string/sprintf");
 
   var chip;
   var outputFilePath;
@@ -60,7 +60,6 @@ var HardwareSimulator = function(testFilePath) {
   };
 
   var run = function() {
-    var LineIterator = require("../lib/LineIterator");
     var comparisonLines = new LineIterator(fs.readFileSync(comparisonFilePath).toString());
     var ignoredHeaders = comparisonLines.next();
 
