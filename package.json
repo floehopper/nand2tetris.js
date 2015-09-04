@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "mocha": "",
-    "chai": ""
+    "chai": "",
+    "glob": ""
   },
   "scripts": {
     "test": "mocha"
