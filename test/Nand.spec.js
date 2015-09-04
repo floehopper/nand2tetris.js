@@ -7,7 +7,7 @@ describe("Nand", function() {
   var nand;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Nand");
     nand = definition.buildModel();
   });

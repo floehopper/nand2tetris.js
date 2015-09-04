@@ -7,7 +7,7 @@ describe("Or", function() {
   var or;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Or");
     or = definition.buildModel();
   });

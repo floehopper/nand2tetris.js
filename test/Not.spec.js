@@ -7,7 +7,7 @@ describe("Not", function() {
   var not;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Not");
     not = definition.buildModel();
   });

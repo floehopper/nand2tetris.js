@@ -7,7 +7,7 @@ describe("And", function() {
   var and;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("And");
     and = definition.buildModel();
   });

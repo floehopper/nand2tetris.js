@@ -7,7 +7,7 @@ describe("Xor", function() {
   var xor;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Xor");
     xor = definition.buildModel();
   });

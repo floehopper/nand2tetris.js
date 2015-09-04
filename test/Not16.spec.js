@@ -7,7 +7,7 @@ describe("Not16", function() {
   var not16;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Not16");
     not16 = definition.buildModel();
   });

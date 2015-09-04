@@ -7,7 +7,7 @@ describe("Mux", function() {
   var mux;
 
   beforeEach(function() {
-    var resolver = new Resolver();
+    var resolver = new Resolver("lib");
     var definition = resolver.resolvePart("Mux");
     mux = definition.buildModel();
   });
