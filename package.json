@@ -9,6 +9,7 @@
     "backbone": "",
     "underscore": "",
     "underscore.string": "",
+    "strip-comments": "",
     "mocha": "",
     "chai": ""
   }
